@@ -23,28 +23,36 @@ public static class Sample
         patStorage.CopyTo(encryptedDataStream);
         var encryptedData = encryptedDataStream.ToArray();
 
-        // Decrypt it
-        var patData = ProtectedData.Unprotect(encryptedData, Entropy, DataProtectionScope.CurrentUser);
-        var plainTextPat = Encoding.UTF8.GetString(patData);
-
-        // Return it to user
         SecureString result = new();
-        foreach (var c in plainTextPat)
+
         {
-            result.AppendChar(c);
+            // Decrypt it
+            var patData = ProtectedData.Unprotect(encryptedData, Entropy, DataProtectionScope.CurrentUser);
+            var plainTextPat = Encoding.UTF8.GetString(patData);
+
+            foreach (var c in plainTextPat)
+            {
+                result.AppendChar(c);
+            }
         }
+
         GC.Collect(); // Force remove unprotected string data from memory
         return result;
     }
 
     public static void StorePat(SecureString pat)
     {
-        // Get the PAT to encrypt
-        var plainTextPat = new NetworkCredential("", pat).Password;
-        var patData = Encoding.UTF8.GetBytes(plainTextPat);
+        byte[] encryptedData;
 
-        // Encrypt it
-        var encryptedData = ProtectedData.Protect(patData, Entropy, DataProtectionScope.CurrentUser);
+        {
+            // Get the PAT to encrypt
+            var plainTextPat = new NetworkCredential("", pat).Password;
+            var patData = Encoding.UTF8.GetBytes(plainTextPat);
+
+            // Encrypt it
+            encryptedData = ProtectedData.Protect(patData, Entropy, DataProtectionScope.CurrentUser);
+        }
+
         GC.Collect(); // Force remove unprotected string data from memory
 
         // Store it

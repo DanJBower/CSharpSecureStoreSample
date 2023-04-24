@@ -10,8 +10,8 @@ This project shows a simple sample of how it could be made really hard to get th
 
 * Isolated Storage - Obfuscate where the app stores its data.
 * Microsoft's DPAPI - Encrypts a stream of data based the user running the process.
-* User provided key - Add another layer of encryption using a key only the user knows.
-* Compile time provided entropy - Keys provided at compile time to add further complexity to the data encryption.
+* User provided key - Add another layer of encryption using a key only the user knows. <- Not implemented in this sample yet
+* Compile time provided entropy - Keys provided at compile time to add further complexity to the data encryption. <- Not implemented in this sample yet
   * This is designed to be injected by CI either with a secret value.
   * Would be even better to use an action like [Some Github Action](SomeAddress) and that way even you don't know the entropy values. *Disclaimer: I made that action.*
 
